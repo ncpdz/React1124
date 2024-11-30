@@ -1,57 +1,36 @@
-import { data } from "autoprefixer";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "../../redux/productSlice";
 import ProductItem from "./productItem";
-import { useState, React } from "react";
 
 function NewArrivals() {
-  const dataNewArrivals = [
-    {
-      id: 1,
-      name: "Áo nam 1",
-      description: "Mô tả hehe",
-      category: "Polo",
-      price: "1000",
-      urlImage:
-        "https://media-fmplus.cdn.vccloud.vn/el-finder-file-system/thumb/v1_L3Byb2R1Y3RzLzIzMDlQVEFSODg4MDQwMi82MTU4OTI0Yy01N2Q3LTRiNzQtODg5MC0yZjgzYTU0MWIzYmRfMkUzOEM0MTY4N0VBMjQzNzhBMkUwNDE0Q0I2MkQyMUUuanBn0",
-    },
-    {
-      id: 2,
-      name: "Áo nam 2",
-      description: "Mô tả hehe",
-      category: "Polo",
-      price: "1000",
-      urlImage:
-        "https://media-fmplus.cdn.vccloud.vn/el-finder-file-system/thumb/v1_L3Byb2R1Y3RzLzIzMDlQVEFSODg4MDQwMi82MTU4OTI0Yy01N2Q3LTRiNzQtODg5MC0yZjgzYTU0MWIzYmRfMkUzOEM0MTY4N0VBMjQzNzhBMkUwNDE0Q0I2MkQyMUUuanBn0",
-    },
-    {
-      id: 3,
-      name: "Áo nam 3",
-      description: "Mô tả hehe",
-      category: "Polo",
-      price: "1000",
-      urlImage:
-        "https://media-fmplus.cdn.vccloud.vn/el-finder-file-system/thumb/v1_L3Byb2R1Y3RzLzIzMDlQVEFSODg4MDQwMi82MTU4OTI0Yy01N2Q3LTRiNzQtODg5MC0yZjgzYTU0MWIzYmRfMkUzOEM0MTY4N0VBMjQzNzhBMkUwNDE0Q0I2MkQyMUUuanBn0",
-    },
-    {
-      id: 4,
-      name: "Áo nam 4",
-      description: "Mô tả hehe",
-      category: "T - Shirt",
-      price: "1000",
-      urlImage:
-        "https://media-fmplus.cdn.vccloud.vn/el-finder-file-system/thumb/v1_L3Byb2R1Y3RzLzIzMDlQVEFSODg4MDQwMi82MTU4OTI0Yy01N2Q3LTRiNzQtODg5MC0yZjgzYTU0MWIzYmRfMkUzOEM0MTY4N0VBMjQzNzhBMkUwNDE0Q0I2MkQyMUUuanBn0",
-    },
-  ];
-  let datas = dataNewArrivals.map((item, index) => (
-    <ProductItem key={index} {...item} />
-  ));
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.products.items);
+  const status = useSelector((state) => state.products.status);
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchProducts());
+    }
+  }, [status, dispatch]);
+
+  const newProducts = [...products]
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 4);
   return (
     <div className="font-[sans-serif] bg-gray-100">
       <div className="p-4 mx-auto lg:max-w-7xl sm:max-w-full">
-        <h2 className="text-4xl font-bold text-gray-800 mb-12">
-          Hàng mới về
-        </h2>
+        <h2 className="text-4xl font-bold text-gray-800 mb-12">Hàng mới về</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-xl:gap-4 gap-6">
-          {datas}
+          {newProducts.map((product) => (
+            <ProductItem
+              key={product.id}
+              name={product.name}
+              category={product.Category.name}
+              price={product.price}
+              urlImage={product.image}
+            />
+          ))}{" "}
         </div>
       </div>
     </div>

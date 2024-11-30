@@ -92,12 +92,12 @@ const Categories = () => {
           <div className="modal-content bg-white p-6 rounded shadow-lg relative">
             <button
               onClick={closeModal}
-              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              className="bg-inherit absolute top-2 right-2 text-gray-500 hover:text-gray-700 bg-inherit"
             >
               ×
             </button>
             <h3 className="text-xl font-bold mb-4">Thêm loại hàng</h3>
-            <form className="w-[500px]" onSubmit={handleSubmit(onSubmit)}>
+            <form className="w-[450px]" onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                   Tên loại hàng
@@ -139,7 +139,7 @@ const Categories = () => {
               ×
             </button>
             <h3 className="text-xl font-bold mb-4">Sửa loại hàng</h3>
-            <form className="w-[500px]" onSubmit={handleSubmit(onSubmit)}>
+            <form className="w-[450px]" onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                   Tên loại hàng

@@ -32,17 +32,12 @@
 }
 
 .modal-content button {
+  font-size: 22px;
   padding: 10px 20px;
   border: none;
   border-radius: 8px;
-  background-color: #3b82f6;
-  color: white;
   cursor: pointer;
   transition: background-color 0.2s;
-}
-
-.modal-content button:hover {
-  background-color: #2563eb;
 }
 
 .modal-content button.close-modal {

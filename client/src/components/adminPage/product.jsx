@@ -20,7 +20,12 @@ const ProductManagement = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(value);
+  };
   useEffect(() => {
     dispatch(fetchProducts());
     dispatch(fetchCategories());
@@ -77,7 +82,7 @@ const ProductManagement = () => {
   const closeModal = () => {
     setIsAddModalOpen(false);
     setIsEditModalOpen(false);
-    setEditingProduct(null); 
+    setEditingProduct(null);
     reset();
   };
   return (
@@ -291,16 +296,16 @@ const ProductManagement = () => {
                   className="w-[70px] inline-block"
                 />
                 <span className="block max-w-[200px] dong2">
-                  {product.name} 
+                  {product.name}
                 </span>
               </td>
               <td className="py-2 border-b border-l text-center w-[350px]">
                 <span className="block w-[300px] dong2">
-                  {product.description} 
+                  {product.description}
                 </span>
               </td>
               <td className="py-2 border-b border-l text-center">
-                {product.price}
+              {formatCurrency(product.price)}
               </td>
               <td className="py-2 border-b border-l text-center">
                 {product.stock}
