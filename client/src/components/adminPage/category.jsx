@@ -92,7 +92,7 @@ const Categories = () => {
           <div className="modal-content bg-white p-6 rounded shadow-lg relative">
             <button
               onClick={closeModal}
-              className="bg-inherit absolute top-2 right-2 text-gray-500 hover:text-gray-700 bg-inherit"
+              className="bg-inherit absolute top-2 right-2 text-gray-500 hover:text-gray-700"
             >
               ×
             </button>

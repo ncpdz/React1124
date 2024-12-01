@@ -122,6 +122,16 @@ class ApiUserController {
       handleError(res, error);
     }
   }
+
+  static async getUserOrders(req, res) {
+    try {
+      const userId = req.params.id;
+      const orders = await Order.findAll({ where: { userId } });
+      res.status(200).json(orders);
+    } catch (error) {
+      handleError(res, error);
+    }
+  }
 }
 
 module.exports = ApiUserController;

@@ -15,8 +15,9 @@ const useAuth = () => {
           return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
         const decodedToken = JSON.parse(jsonPayload);
-
         setUser(decodedToken.username);
+        console.log("Thông tin user từ token:", decodedToken);
+
       } catch (error) {
         console.error('Token không hợp lệ', error);
         localStorage.removeItem('token');

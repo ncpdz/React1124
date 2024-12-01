@@ -8,7 +8,6 @@ export const createOrder = createAsyncThunk(
   async (orderData, { getState, rejectWithValue }) => {
     const { token } = getState().user;
     try {
-      // Đảm bảo rằng trạng thái mặc định là 1
       const response = await axios.post(
         API_URL,
         { ...orderData, status: 1 },
@@ -75,9 +74,25 @@ export const updateOrder = createAsyncThunk(
         `${API_URL}/${id}`,
         { status },
         {
-          headers: { Authorization: `Bearer ${token}` }, 
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const fetchUserOrders = createAsyncThunk(
+  "order/fetchUserOrders",
+  async (_, { getState, rejectWithValue }) => {
+    const { token, user } = getState().user;
+    try {
+      const response = await axios.get(API_URL, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { userId: user.id }, 
+      });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -130,6 +145,18 @@ const orderSlice = createSlice({
         }
       })
       .addCase(updateOrder.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload || action.error.message;
+      })
+      .addCase(fetchUserOrders.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchUserOrders.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        console.log("Orders fetched:", action.payload);
+        state.orders = action.payload;
+      })
+      .addCase(fetchUserOrders.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload || action.error.message;
       });

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form"; // Import useForm từ react-hook-form
 import {
   fetchCart,
   updateQuantity,
@@ -15,18 +16,17 @@ const Cart = () => {
   const { items, status, error } = useSelector((state) => state.cart);
   const token = useSelector((state) => state.user.token);
   const [notification, setNotification] = useState("");
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    address: "",
-  });
-
-  const formatCurrency = (value) =>
-    new Intl.NumberFormat("vi-VN", {
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
     }).format(value);
+  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
     if (!token) {
@@ -65,12 +65,7 @@ const Cart = () => {
     });
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-  };
-
-  const handleCheckout = () => {
+  const handleCheckout = (formData) => {
     const orderData = {
       items: items.map((item) => ({
         productId: item.product.id,
@@ -196,40 +191,83 @@ const Cart = () => {
               </>
             ))}
         </div>
-        <div className="bg-gray-100 rounded-md p-4">
-          <h3 className="text-lg font-bold text-gray-800 border-b pb-2">
-            Hóa đơn
-          </h3>
-          <form className="mt-6 space-y-3">
-            {["fullName", "email", "phone", "address"].map((field) => (
+        {items.length > 0 && (
+          <div className="space-y-6 bg-gray-100 p-4 rounded-md">
+            <h3 className="text-lg font-bold text-gray-800">Hóa đơn</h3>
+            <form className="space-y-3" onSubmit={handleSubmit(handleCheckout)}>
               <input
-                key={field}
-                type={field === "email" ? "email" : "text"}
-                name={field}
-                value={formData[field]}
-                onChange={handleInputChange}
-                placeholder={field}
+                type="text"
+                name="fullName"
+                placeholder="Họ và tên"
                 className="px-4 py-2.5 bg-white text-gray-800 rounded-md w-full text-sm border-b focus:border-gray-800 outline-none"
+                {...register("fullName", { required: "Họ và tên là bắt buộc" })}
               />
-            ))}
-          </form>
-          <ul className="text-gray-800 mt-6 space-y-3">
-            <li className="flex gap-4 text-sm">
-              Phí giao hàng <span className="ml-auto font-bold">0đ</span>
-            </li>
-            <li className="flex gap-4 text-sm font-bold text-gray-900">
-              Tổng cộng{" "}
-              <span className="ml-auto">{formatCurrency(totalAmount)}</span>
-            </li>
-          </ul>
-          <button
-            type="button"
-            onClick={handleCheckout}
-            className="block mt-4 w-full text-center bg-gray-800 text-white px-4 py-2.5 text-sm font-medium rounded-md hover:opacity-80"
-          >
-            Đặt hàng
-          </button>
-        </div>
+              {errors.fullName && (
+                <p className="text-red-500 text-xs">
+                  {errors.fullName.message}
+                </p>
+              )}
+
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                className="px-4 py-2.5 bg-white text-gray-800 rounded-md w-full text-sm border-b focus:border-gray-800 outline-none"
+                {...register("email", {
+                  required: "Email là bắt buộc",
+                  pattern: {
+                    value: /^[^@]+@[^@]+\.[^@]+$/,
+                    message: "Email không hợp lệ",
+                  },
+                })}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-xs">{errors.email.message}</p>
+              )}
+
+              <input
+                type="text"
+                name="phone"
+                placeholder="Số điện thoại"
+                className="px-4 py-2.5 bg-white text-gray-800 rounded-md w-full text-sm border-b focus:border-gray-800 outline-none"
+                {...register("phone", {
+                  required: "Số điện thoại là bắt buộc",
+                  minLength: 10,
+                })}
+              />
+              {errors.phone && (
+                <p className="text-red-500 text-xs">{errors.phone.message}</p>
+              )}
+              {errors.phone?.type === "minLength" && (
+                <p className="text-red-500 text-xs">Số điện thoại phải hợp lệ</p>
+              )}
+
+              <input
+                type="text"
+                name="address"
+                placeholder="Địa chỉ"
+                className="px-4 py-2.5 bg-white text-gray-800 rounded-md w-full text-sm border-b focus:border-gray-800 outline-none"
+                {...register("address", { required: "Địa chỉ là bắt buộc" })}
+              />
+              {errors.address && (
+                <p className="text-red-500 text-xs">{errors.address.message}</p>
+              )}
+              <div className="flex justify-between mt-4">
+                <span className="font-bold text-gray-800">Tổng cộng</span>
+                <span className="font-bold text-gray-800">
+                  {formatCurrency(totalAmount)}
+                </span>
+              </div>
+
+              <button
+                type="submit"
+                className="mt-6 w-full bg-green-600 text-white font-semibold py-2 rounded-md"
+              >
+                Đặt hàng
+              </button>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -70,12 +70,18 @@ function Order() {
 
   const handleStatusChange = (id, newStatus) => {
     const order = orders.find((order) => order.id === id);
-    if (order && newStatus > order.status) {
+    if (!order) return;
+      if (order.status === 2) {
+      alert("Đơn hàng đã hủy không thể thay đổi trạng thái.");
+      return;
+    }
+    if (newStatus > order.status) {
       dispatch(updateOrder({ id, status: newStatus }));
     } else {
-      alert("Không thể chọn trạng thái nhỏ hơn trạng thái hiện tại");
+      alert("Không thể chọn trạng thái nhỏ hơn trạng thái hiện tại.");
     }
   };
+  
 
   const handleShowDetails = (order) => {
     setSelectedOrder(order);
@@ -138,14 +144,19 @@ function Order() {
                     handleStatusChange(order.id, parseInt(e.target.value))
                   }
                 >
-                  {statusOptions.map(
-                    (option) =>
-                      option.value >= order.status && (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      )
-                  )}
+                  {statusOptions
+                    .filter((option) => {
+                      if (order.status === 2) {
+                        return option.value === 2;
+                      } else {
+                        return option.value >= order.status;
+                      }
+                    })
+                    .map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
                 </select>
               </td>
               <td className="p-4 text-sm">
@@ -239,7 +250,7 @@ function Order() {
               </div>
               <div>
                 <h4 className="font-semibold text-gray-700">Tổng tiền:</h4>
-                <p className="text-gray-600 font-medium text-red-600 font-semibold">
+                <p className="text-red-600 font-semibold">
                   {formatCurrency(selectedOrder.totalAmount.toLocaleString())}
                 </p>
               </div>

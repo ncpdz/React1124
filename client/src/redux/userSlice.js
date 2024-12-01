@@ -10,6 +10,8 @@ export const loginUser = createAsyncThunk(
         "http://localhost:3100/api/users/login",
         userData
       );
+      console.log(response.data);
+      
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -25,7 +27,6 @@ export const createUser = createAsyncThunk(
         "http://localhost:3100/api/users/create",
         userData
       );
-      return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -125,7 +126,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.items = action.payload; // Update items with user list
+        state.items = action.payload;
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.status = "failed";
