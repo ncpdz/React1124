@@ -7,6 +7,27 @@ const handleError = (res, error) => {
 };
 
 class ApiUserController {
+  // static async login(req, res) {
+  //   try {
+  //     const { email, password } = req.body;
+  //     const user = await User.findOne({ where: { email } });
+  //     if (!user) {
+  //       return res.status(404).json({ error: "User not found" });
+  //     }
+  //     const isPasswordValid = await bcrypt.compare(password, user.password);
+  //     if (!isPasswordValid) {
+  //       return res.status(401).json({ error: "Invalid credentials" });
+  //     }
+  //     const token = jwt.sign(
+  //       { id: user.id, username: user.username },
+  //       "your_secret_key",
+  //       { expiresIn: "1h" }
+  //     );
+  //     res.status(200).json({ token });
+  //   } catch (error) {
+  //     handleError(res, error);
+  //   }
+  // }
   static async login(req, res) {
     try {
       const { email, password } = req.body;
@@ -19,11 +40,11 @@ class ApiUserController {
         return res.status(401).json({ error: "Invalid credentials" });
       }
       const token = jwt.sign(
-        { id: user.id, username: user.username },
+        { id: user.id, username: user.username, role: user.role },
         "your_secret_key",
         { expiresIn: "1h" }
       );
-      res.status(200).json({ token });
+      res.status(200).json({ token, user: { id: user.id, role: user.role } });
     } catch (error) {
       handleError(res, error);
     }
@@ -76,7 +97,6 @@ class ApiUserController {
         return res.status(404).json({ error: "User not found" });
       }
 
-      // Kiểm tra nếu có mật khẩu mới thì mã hóa nó
       let updatedData = { username, email, role, isActive };
       if (password) {
         const hashedPassword = await bcrypt.hash(password, 10);

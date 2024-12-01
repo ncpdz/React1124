@@ -16,10 +16,10 @@ import Store from "./components/homePage/store.jsx";
 import Checkout from "./components/homePage/checkout.jsx";
 import Cart from "./components/homePage/cart.jsx";
 import Dashboard from "./components/adminPage/dashboard.jsx";
-// import store from "./demoRedux.js";
 import store from "./redux/store.js";
 import { Provider } from "react-redux";
 import Register from "./components/register.jsx";
+import PrivateRoute from "./PrivateRoute.jsx";
 
 const router = createBrowserRouter([
   {
@@ -34,37 +34,25 @@ const router = createBrowserRouter([
       { path: "store", element: <Store /> },
       { path: "todos", element: <Todos /> },
       {
-        path: "products-detail",
+        path: "products/:id",
         element: <ProductDetail />,
       },
     ],
   },
   {
     path: "/admin",
-    element: <App />,
+    element: (
+      <PrivateRoute>
+        <App />
+      </PrivateRoute>
+    ),
     children: [
       { path: "", element: <Dashboard /> },
-      {
-        path: "users",
-        element: <UserManagement />,
-      },
-      {
-        path: "products",
-        element: <ProductManagement />,
-      },
-      {
-        path: "category",
-        element: <Categories />,
-      },
-      {
-        path: "order",
-        element: <Order />,
-      },
-
-      {
-        path: "todos",
-        element: <Todos />,
-      },
+      { path: "users", element: <UserManagement /> },
+      { path: "products", element: <ProductManagement /> },
+      { path: "category", element: <Categories /> },
+      { path: "order", element: <Order /> },
+      { path: "todos", element: <Todos /> },
     ],
   },
 ]);

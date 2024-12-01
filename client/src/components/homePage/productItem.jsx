@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom";
 
-function ProductItem({ name, category, price, urlImage }) {
+function ProductItem({ id, name, category, price, urlImage }) {
   const formatCurrency = (value) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
     }).format(value);
   };
+
   return (
-    <Link to="/products-detail">
+    <Link to={`/products/${id}`}>
       <div className="bg-white rounded-2xl cursor-pointer hover:-translate-y-2 transition-all relative w-[300px]">
         <div className="bg-gray-100 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer absolute top-4 right-4">
           <svg
@@ -35,7 +36,7 @@ function ProductItem({ name, category, price, urlImage }) {
             {name}
           </h3>
           <p className="text-gray-600 text-sm mt-2 italic">{category}</p>
-          <h4 className="text-lg text-gray-800 font-bold mt-4">
+          <h4 className="text-lg text-gray-800 font-bold mt-4 text-red-500">
             {formatCurrency(price)}
           </h4>
         </div>

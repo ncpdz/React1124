@@ -71,6 +71,7 @@ function Store() {
           {filteredProducts.map((product) => (
             <ProductItem
               key={product.id}
+              id={product.id}
               name={product.name}
               category={product.Category.name}
               price={product.price}
