@@ -3,8 +3,8 @@ const Product = require('./productModel');
 const Category = require('./categoryModel');
 const User = require('./userModel');
 const Cart = require('./cartModel');
+const Order = require('./orderModel');
 
-// Định nghĩa các mối quan hệ
 Category.hasMany(Product, { foreignKey: "CategoryId" });
 Product.belongsTo(Category, { foreignKey: "CategoryId" });
 
@@ -14,7 +14,9 @@ Cart.belongsTo(User, { foreignKey: 'userId' });
 Product.hasMany(Cart, { foreignKey: 'productId' });
 Cart.belongsTo(Product, { foreignKey: 'productId' });
 
-// Đồng bộ hóa cơ sở dữ liệu
+User.hasMany(Order, { foreignKey: 'userId' });
+Order.belongsTo(User, { foreignKey: 'userId' });
+
 sequelize.sync();
 
-module.exports = { sequelize, Product, Category, User, Cart };
+module.exports = { sequelize, Product, Category, User, Cart, Order };

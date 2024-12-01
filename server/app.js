@@ -14,6 +14,7 @@ const categoryRoutes = require("./routes/api/categoryRoutes");
 const apiUserRoutes = require("./routes/api/userRoutes");
 const apiCartRoutes = require("./routes/api/cartRoutes");
 const apiProductRoutes = require("./routes/api/productRoutes");
+const apiOrderRoutes = require("./routes/api/orderRoutes");
 
 const app = express();
 
@@ -61,6 +62,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/products", apiProductRoutes);
 app.use("/api/users", apiUserRoutes);
 app.use("/api/cart", apiCartRoutes);
+app.use("/api/orders", apiOrderRoutes);
 
 app.get("/", (req, res) => {
   res.redirect("/api/products");
