@@ -14,12 +14,12 @@ class ApiOrderController {
         items,
         totalAmount,
         customerInfo,
+        status: 1,
       });
       await Cart.destroy({ where: { userId } });
       res.status(201).json(newOrder);
     } catch (error) {
-      console.error("Error creating order:", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      handleError(res, error);
     }
   }
 

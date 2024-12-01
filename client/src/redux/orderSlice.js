@@ -1,4 +1,3 @@
-// redux/orderSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -9,9 +8,14 @@ export const createOrder = createAsyncThunk(
   async (orderData, { getState, rejectWithValue }) => {
     const { token } = getState().user;
     try {
-      const response = await axios.post(API_URL, orderData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      // Đảm bảo rằng trạng thái mặc định là 1
+      const response = await axios.post(
+        API_URL,
+        { ...orderData, status: 1 },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -33,6 +37,7 @@ export const fetchOrders = createAsyncThunk(
     }
   }
 );
+
 export const fetchProductDetails = createAsyncThunk(
   "order/fetchProductDetails",
   async (productId, { rejectWithValue }) => {
@@ -46,6 +51,7 @@ export const fetchProductDetails = createAsyncThunk(
     }
   }
 );
+
 export const fetchUserDetails = createAsyncThunk(
   "order/fetchUserDetails",
   async (userId, { rejectWithValue }) => {
@@ -62,9 +68,16 @@ export const fetchUserDetails = createAsyncThunk(
 
 export const updateOrder = createAsyncThunk(
   "order/updateOrder",
-  async ({ id, status }, { rejectWithValue }) => {
+  async ({ id, status }, { getState, rejectWithValue }) => {
+    const { token } = getState().user;
     try {
-      const response = await axios.put(`${API_URL}/${id}`, { status });
+      const response = await axios.put(
+        `${API_URL}/${id}`,
+        { status },
+        {
+          headers: { Authorization: `Bearer ${token}` }, 
+        }
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

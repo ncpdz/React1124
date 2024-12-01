@@ -20,6 +20,7 @@ import store from "./redux/store.js";
 import { Provider } from "react-redux";
 import Register from "./components/register.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
+import UserOrders from "./components/homePage/userOrder.jsx";
 
 const router = createBrowserRouter([
   {
@@ -33,10 +34,12 @@ const router = createBrowserRouter([
       { path: "checkout", element: <Checkout /> },
       { path: "store", element: <Store /> },
       { path: "todos", element: <Todos /> },
+      { path: "bill", element: <UserOrders /> },
       {
         path: "products/:id",
         element: <ProductDetail />,
       },
+      
     ],
   },
   {
