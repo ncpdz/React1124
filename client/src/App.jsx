@@ -14,20 +14,6 @@ export default function App() {
     <div className="flex">
       <Sidebar />
       <Outlet />
-      {/* <input
-        onChange={(e) => setText(e.target.value)}
-        value={text}
-        type="text"
-        className="p-2 border h-[40px]"
-      />
-      <h1>{count}</h1>
-      <button
-        onClick={() => {
-          setCount(count + 1);
-        }}
-      >
-        Change
-      </button> */}
     </div>
   );
 }

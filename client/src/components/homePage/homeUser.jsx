@@ -9,7 +9,6 @@ import 'react-toastify/dist/ReactToastify.css';
 function HomeUser() {
   return (
     <div className="">
-      <ToastContainer/>
       <Slider />
       <ListCateHome/>
       <NewArrivals/>

@@ -17,7 +17,7 @@ const store = configureStore({
     todo: todoReducer,
     [todoApi.reducerPath]: todoApi.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
+  middleware: (getDefaultMiddleware) => 
     getDefaultMiddleware().concat(todoApi.middleware),
 });
 
