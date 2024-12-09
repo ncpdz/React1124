@@ -87,15 +87,14 @@ export const updateOrder = createAsyncThunk(
 export const fetchUserOrders = createAsyncThunk(
   "order/fetchUserOrders",
   async (_, { getState, rejectWithValue }) => {
-    const { token, user } = getState().user;
+    const { token } = getState().user;
     try {
-      const response = await axios.get(API_URL, {
+      const response = await axios.get(`${API_URL}/user-orders`, {
         headers: { Authorization: `Bearer ${token}` },
-        params: { userId: user.id }, 
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data || error.message);
     }
   }
 );
@@ -153,7 +152,6 @@ const orderSlice = createSlice({
       })
       .addCase(fetchUserOrders.fulfilled, (state, action) => {
         state.status = "succeeded";
-        console.log("Orders fetched:", action.payload);
         state.orders = action.payload;
       })
       .addCase(fetchUserOrders.rejected, (state, action) => {

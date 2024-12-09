@@ -57,6 +57,19 @@ class ApiOrderController {
       handleError(res, error);
     }
   }
+
+  static async getUserOrders(req, res) {
+    try {
+      const userId = req.userId;
+      const orders = await Order.findAll({ where: { userId } });
+      if (!orders || orders.length === 0) {
+        return res.status(404).json({ error: "Order not found" });
+      }
+      res.status(200).json(orders);
+    } catch (error) {
+      handleError(res, error);
+    }
+  }
 }
 
 module.exports = ApiOrderController;

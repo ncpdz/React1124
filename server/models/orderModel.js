@@ -39,7 +39,6 @@ Order.init(
   }
 );
 
-// Establish relationship
 Order.belongsTo(User, { foreignKey: "userId" });
 User.hasMany(Order, { foreignKey: "userId" });
 

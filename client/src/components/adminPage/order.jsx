@@ -8,20 +8,18 @@ import {
 } from "../../redux/orderSlice";
 
 function Order() {
-  const [selectedOrder, setSelectedOrder] = useState(null); // For modal visibility and selected order
+  const [selectedOrder, setSelectedOrder] = useState(null);
   const dispatch = useDispatch();
   const { orders, status, error } = useSelector((state) => state.order);
   const [userDetails, setUserDetails] = useState({});
   const [productDetails, setProductDetails] = useState({});
 
-  // Fetch orders on initial render
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchOrders());
     }
   }, [dispatch, status]);
 
-  // Fetch user and product details as needed
   useEffect(() => {
     async function fetchData() {
       for (const order of orders) {
@@ -100,7 +98,7 @@ function Order() {
 
   return (
     <div className="overflow-x-auto font-[sans-serif] p-10 w-full">
-      <h1 className="mb-10 text-[32px] font-bold">Quản lý đơn hàng</h1>
+      <h2 className="text-2xl font-bold mb-4 text-center">Quản lý đơn hàng</h2>
       {status === "loading" && <p>Loading...</p>}
       {status === "failed" && <p>Error: {error}</p>}
 
@@ -116,12 +114,11 @@ function Order() {
             <th className="p-4 text-left text-sm font-semibold text-black">
               Tình trạng
             </th>
+            <th className="p-4 text-left text-sm font-semibold text-black"> Ngày đặt hàng </th>
             <th className="p-4 text-left text-sm font-semibold text-black">
               Xem chi tiết
             </th>
-            {/* <th className="p-4 text-left text-sm font-semibold text-black">
-              Action
-            </th> */}
+
           </tr>
         </thead>
         <tbody className="whitespace-nowrap divide-y divide-gray-200">
@@ -159,6 +156,7 @@ function Order() {
                     ))}
                 </select>
               </td>
+              <td className="p-4 text-sm">{new Date(order.createdAt).toLocaleDateString("vi-VN")}</td>
               <td className="p-4 text-sm">
                 <button
                   onClick={() => handleShowDetails(order)}

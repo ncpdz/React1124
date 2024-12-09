@@ -161,12 +161,11 @@ function Header() {
               </Link>
             </li>
             <li className="max-lg:border-b max-lg:px-3 max-lg:py-3">
-              <a
-                href="javascript:void(0)"
+              <Link to="/bill"
                 className="hover:text-[#007bff] text-gray-600 font-semibold text-[15px] block"
               >
-                Blog
-              </a>
+                Order
+              </Link>
             </li>
             <li className="max-lg:border-b max-lg:px-3 max-lg:py-3">
               <a
